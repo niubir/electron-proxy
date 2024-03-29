@@ -1,16 +1,27 @@
 {
-  "name": "electron-proxy",
+  "name": "@niubir/electron-proxy",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "This electron proxy util",
+  "keywords": [
+    "electron",
+    "electron-proxy"
+  ],
+  "author": "niubir",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "sysproxy.js",
+    "README.md"
+  ],
   "dependencies": {
     "ini": "^4.1.2",
     "net-proxied": "1.0.1",
     "uuid": "^9.0.1",
     "xfuture": "^1.6.3"
-  },
-  "files": [
-    "index.js",
-    "sysproxy.js"
-  ]
+  }
 }
