@@ -1,0 +1,16 @@
+{
+  "name": "electron-proxy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "ini": "^4.1.2",
+    "net-proxied": "1.0.1",
+    "uuid": "^9.0.1",
+    "xfuture": "^1.6.3"
+  },
+  "files": [
+    "index.js",
+    "sysproxy.js"
+  ]
+}
