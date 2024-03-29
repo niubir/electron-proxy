@@ -101,6 +101,10 @@ const quit = () => {
   })
 }
 
+const getEngine = () => {
+  return engine
+}
+
 /*
 node struct:
 {
@@ -469,10 +473,10 @@ const get_xfuture_resource_path = (xfuturePath) => {
   return path.join(xfuturePath, '/resources')
 }
 
-
 module.exports = {
   init,
   quit,
+  getEngine,
   configNodes,
   changeType,
   changeMode,
