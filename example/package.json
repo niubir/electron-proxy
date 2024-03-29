@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron-proxy": "^1.0.0"
+    "@niubir/electron-proxy": "^1.0.1"
   }
 }

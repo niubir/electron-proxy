@@ -43,7 +43,10 @@ const init = ({
   syncFunc = (engine) => {
     console.log('sync proxy:', engine)
   },
-  xfuturePassword = '',
+  xfutureConfig = {
+    path: '',
+    password: '',
+  },
 }) => {
   return new Promise(async (resolve, reject) => {
     ini_file_path = iniFilePath
@@ -51,11 +54,11 @@ const init = ({
     default_mode = defaultMode
     sync_func = syncFunc
     xfuture_config = {
-      password: xfuturePassword,
-      install_shell_path: get_xfuture_install_shell_path(),
-      install_helper_path: get_xfuture_install_helper_path(),
-      tun_config_path: get_xfuture_tun_config_path(),
-      resource_path: get_xfuture_resource_path(),
+      password: xfutureConfig.password,
+      install_shell_path: get_xfuture_install_shell_path(xfutureConfig.path),
+      install_helper_path: get_xfuture_install_helper_path(xfutureConfig.path),
+      tun_config_path: get_xfuture_tun_config_path(xfutureConfig.path),
+      resource_path: get_xfuture_resource_path(xfutureConfig.path),
     }
 
     engine.type = get_type()
@@ -432,41 +435,38 @@ const get_type = () => {
 const get_mode = () => {
   return get_proxy_ini().mode
 }
-const get_xfuture_path = () => {
-  return path.join(__dirname, 'node_modules/xfuture')
-}
-const get_xfuture_install_shell_path = () => {
+const get_xfuture_install_shell_path = (xfuturePath) => {
   switch (process.platform) {
     case 'win32':
       return 'maodou'
     case 'darwin':
-      return path.join(get_xfuture_path(), '/package/mac/install_helper.sh')
+      return path.join(xfuturePath, '/package/mac/install_helper.sh')
     default:
       return ''
   }
 }
-const get_xfuture_install_helper_path = () => {
+const get_xfuture_install_helper_path = (xfuturePath) => {
   switch (process.platform) {
     case 'win32':
-      return path.join(get_xfuture_path(), '/package/windows/sysproxy.exe')
+      return path.join(xfuturePath, '/package/windows/sysproxy.exe')
     case 'darwin':
-      return path.join(get_xfuture_path(), '/package/mac/install_helper.sh')
+      return path.join(xfuturePath, '/package/mac/install_helper.sh')
     default:
       return ''
   }
 }
-const get_xfuture_tun_config_path = () => {
+const get_xfuture_tun_config_path = (xfuturePath) => {
   switch (process.platform) {
     case 'win32':
-      return path.join(get_xfuture_path(), '/package/windows/sing-box-global.json')
+      return path.join(xfuturePath, '/package/windows/sing-box-global.json')
     case 'darwin':
       return ''
     default:
       return ''
   }
 }
-const get_xfuture_resource_path = () => {
-  return path.join(get_xfuture_path(), '/resources')
+const get_xfuture_resource_path = (xfuturePath) => {
+  return path.join(xfuturePath, '/resources')
 }
 
 

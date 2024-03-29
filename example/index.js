@@ -1,8 +1,11 @@
-const { app } = require('electron')
-const { init: proxy_init, configNodes, quit } = require('./index')
+const path = require('path')
+const { init: proxy_init, configNodes } = require('@niubir/electron-proxy')
 
 proxy_init({
-  xfuturePassword: '88991237'
+  xfutureConfig: {
+    path: path.join(__dirname, 'node_modules/xfuture'),
+    password: 'INPUT_YOUT_PASSWORD',
+  }
 }).then(()=>{
   console.info('proxy init success')
 }).catch(err=>{
@@ -12,18 +15,9 @@ proxy_init({
 
 configNodes({
   nodes: [{
-    url: 'vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIvCfh6/wn4e15pel5pysQTAyfOWliOmjnnxHUFQiLA0KICAiYWRkIjogIjE4My4yMzIuMTcwLjIxIiwNCiAgInBvcnQiOiAiMzAwMjUiLA0KICAiaWQiOiAiNTRmYzI1MDQtZjhkMS00NmY5LTlmZjUtZjQxOTk1M2QwMmZiIiwNCiAgImFpZCI6ICIwIiwNCiAgInNjeSI6ICJhdXRvIiwNCiAgIm5ldCI6ICJ0Y3AiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAiIiwNCiAgInBhdGgiOiAiIiwNCiAgInRscyI6ICIiLA0KICAic25pIjogIiIsDQogICJhbHBuIjogIiIsDQogICJmcCI6ICIiDQp9'
+    url: 'vmess://...'
   }],
   doPick: false,
   doStart: true,
   doClose: false,
 })
-
-// if (!app.requestSingleInstanceLock()) {
-//   app.quit()
-// } else {
-  
-//   app.whenReady().then(async () => {
-    
-//   })
-// }
