@@ -377,6 +377,12 @@ const close = () => {
   })
 }
 
+const clearProxyIni = () => {
+  if (ini_file_path && fs.existsSync(ini_file_path)) {
+    fs.rmSync(ini_file_path)
+  }
+}
+
 
 const set_current = (groupID, nodeID) => {
   return new Promise((resolve, reject) => {
@@ -445,6 +451,7 @@ const set_proxy_ini = (type, mode) => {
     section: 'section',
   }))
 }
+
 const get_proxy_ini = () => {
   let type = default_type
   let mode = default_mode
@@ -514,4 +521,5 @@ module.exports = {
   changeNode,
   start,
   close,
+  clearProxyIni,
 }
