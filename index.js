@@ -36,6 +36,18 @@ let engine = {
   delaies: {},
 }
 
+const init_engine = () => {
+  engine.loaded = false
+  engine.status = 'off'
+  engine.statusOnTime = null
+  engine.nodes = []
+  engine.groups = []
+  engine.userAllowIDs = []
+  engine.currentNode = null
+  engine.currentGroup = null
+  engine.delaies = {}
+}
+
 const init = ({
   iniFilePath = './proxy.ini',
   defaultType = 'proxy',
@@ -63,6 +75,8 @@ const init = ({
 
     engine.type = get_type()
     engine.mode = get_mode()
+
+    init_engine()
 
     try {
       xEngine.InstallDriver(xfuture_config.install_shell_path, xfuture_config.install_helper_path)
@@ -101,7 +115,22 @@ const quit = () => {
   })
 }
 
-const getEngine = () => {
+const reload = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      xEngine.StopProxy()
+      xEngine.StopTunnel()
+      await closeProxy()
+      init_engine()
+    } catch (err) {
+      reject(err)
+      return
+    }
+    resolve()
+  })
+}
+
+const get = () => {
   return engine
 }
 
@@ -476,7 +505,8 @@ const get_xfuture_resource_path = (xfuturePath) => {
 module.exports = {
   init,
   quit,
-  getEngine,
+  reload,
+  get,
   configNodes,
   changeType,
   changeMode,
