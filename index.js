@@ -377,7 +377,7 @@ const close = () => {
   })
 }
 
-const clearProxyIni = () => {
+const clearIni = () => {
   if (ini_file_path && fs.existsSync(ini_file_path)) {
     fs.rmSync(ini_file_path)
   }
@@ -521,5 +521,5 @@ module.exports = {
   changeNode,
   start,
   close,
-  clearProxyIni,
+  clearIni,
 }
