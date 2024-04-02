@@ -129,8 +129,8 @@ const quit = () => {
 const reload = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      xEngine.StopProxy()
       xEngine.StopTunnel()
+      xEngine.SetTunModeEnable(false, xfuture_config.resource_path, xfuture_config.tun_config_path)
       await closeProxy()
       init_engine()
     } catch (err) {
