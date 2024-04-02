@@ -164,7 +164,7 @@ const configNodes = ({
       }
       const url_info = xParser.parse(node.url)
       if (!node.name) {
-        node.name = url_info.remark
+        node.name = decodeURI(url_info.remark)
       }
       node.address = url_info.address
       node.port = url_info.port
