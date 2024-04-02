@@ -105,6 +105,8 @@ const init = ({
       quit()
       process.exit(0)
     })
+
+    sync_engine()
     resolve()
   })
 }
@@ -118,6 +120,8 @@ const quit = () => {
     } catch (err) {
       console.error('quit do sysproxy close failed:', err)
     }
+
+    sync_engine()
     resolve()
   })
 }
@@ -133,6 +137,8 @@ const reload = () => {
       reject(err)
       return
     }
+
+    sync_engine()
     resolve()
   })
 }
