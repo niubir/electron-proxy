@@ -1,6 +1,6 @@
 {
   "name": "@niubir/electron-proxy",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "This electron proxy util",
   "keywords": [
     "electron",
@@ -21,7 +21,6 @@
   "dependencies": {
     "ini": "^4.1.2",
     "net-proxied": "1.0.1",
-    "uuid": "^9.0.1",
     "tcp-ping": "^0.1.1",
     "xfuture": "^1.6.3"
   }

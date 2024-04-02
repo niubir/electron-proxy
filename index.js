@@ -171,7 +171,7 @@ const configNodes = ({
         continue
       }
       if (!node.id) {
-        node.id = new_uuid()
+        node.id = Buffer.from(node.url).toString('base64')
       }
       const url_info = xParser.parse(node.url)
       if (!node.name) {
