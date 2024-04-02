@@ -36,7 +36,6 @@ let engine = {
   currentGroup: null,
 
   delaies: {},
-  delayFresher: null,
 }
 
 const init_engine = () => {
@@ -494,13 +493,13 @@ const get_xfuture_resource_path = (xfuturePath) => {
   return path.join(xfuturePath, '/resources')
 }
 
-
+let delayFresher = null
 const run_test_delay = () => {
-  if (engine.delayFresher) {
-    clearInterval(engine.delayFresher)
+  if (delayFresher) {
+    clearInterval(delayFresher)
   }
   test_delaies()
-  engine.delayFresher = setInterval(()=>{
+  delayFresher = setInterval(()=>{
     test_delaies()
   }, 30000)
 }
