@@ -334,7 +334,7 @@ const start = () => {
     xEngine.SetTunModeEnable(tunEnable, xfuture_config.resource_path, xfuture_config.tun_config_path)
 
     let globalEnable = false
-    if (engine.mode = 'global') {
+    if (engine.mode == 'global') {
       globalEnable = true
     }
     xEngine.SetGlobalMode(globalEnable, xfuture_config.resource_path)
