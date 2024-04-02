@@ -148,9 +148,7 @@ const configNodes = ({
   nodes = [],
   groups = [],
   userAllowIDs = [],
-  doPick = true,
-  doStart = false,
-  doClose = true,
+  afterDo = () => {},
 }) => {
   return new Promise(async (resolve, reject) => {
     let groupIDNodes = {}
@@ -208,25 +206,11 @@ const configNodes = ({
     engine.userAllowIDs = userAllowIDs || []
     engine.loaded = true
 
-    if (doPick) {
+    if (afterDo && typeof afterDo == 'function') {
       try {
-        await set_current()
+        await afterDo(engine)
       } catch (err) {
-        console.error('configNodes do pick failed:', err)
-      }
-    }
-    if (doStart) {
-      try {
-        await start()
-      } catch (err) {
-        console.error('configNodes do start failed:', err)
-      }
-    }
-    if (doClose) {
-      try {
-        await close()
-      } catch (err) {
-        console.error('configNodes do close failed:', err)
+        console.warn('config nodes after do failed:', err)
       }
     }
 
