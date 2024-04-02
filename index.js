@@ -26,6 +26,8 @@ let engine = {
   type: default_type,
   mode: default_mode,
 
+  nodeCompareFunc: null,
+
   nodes: [],
   groups: [],
   userAllowIDs: [],
@@ -34,6 +36,7 @@ let engine = {
   currentGroup: null,
 
   delaies: {},
+  delayFresher: null,
 }
 
 const init_engine = () => {
@@ -46,6 +49,7 @@ const init_engine = () => {
   engine.currentNode = null
   engine.currentGroup = null
   engine.delaies = {}
+  run_test_delay()
 }
 
 const init = ({
@@ -55,6 +59,7 @@ const init = ({
   syncFunc = (engine) => {
     console.log('sync proxy:', engine)
   },
+  nodeCompareFunc = null,
   xfutureConfig = {
     path: '',
     password: '',
@@ -75,6 +80,8 @@ const init = ({
 
     engine.type = get_type()
     engine.mode = get_mode()
+
+    engine.nodeCompareFunc = nodeCompareFunc
 
     init_engine()
 
@@ -387,17 +394,11 @@ const set_current = (groupID, nodeID) => {
       reject('no_allow_node')
       return
     }
-    usebleNodes.sort((a, b) => {
-      const a_delay = engine.delaies[a.id] || 0
-      const b_delay = engine.delaies[b.id] || 0
-      const a_score = a_delay * 100
-      const b_score = b_delay * 100
-      if (a_score != b_score) {
-        return a_score - b_score
-      } else {
-        return a.name.localeCompare(b.name)
-      }
-    })
+    if (engine.nodeCompareFunc && typeof engine.nodeCompareFunc == 'function') {
+      usebleNodes.sort((a, b) => {
+        return engine.nodeCompareFunc(a, b)
+      })
+    }
 
     engine.currentNode = usebleNodes[0]
     if (!groupID && usebleNodes[0].groupIDs.length > 0) {
@@ -493,6 +494,78 @@ const get_xfuture_resource_path = (xfuturePath) => {
   return path.join(xfuturePath, '/resources')
 }
 
+
+const run_test_delay = () => {
+  if (engine.delayFresher) {
+    clearInterval(engine.delayFresher)
+  }
+  test_delaies()
+  engine.delayFresher = setInterval(()=>{
+    test_delaies()
+  }, 30000)
+}
+const test_delaies = () => {
+  for (let node of engine.nodes) {
+    if (engine.delaies[node.id]) {
+      continue
+    }
+    test_delay(node).then(delay=>{
+      engine.delaies[node.id] = delay
+    })
+  }
+}
+const test_delay = (node) => {
+  return new Promise((resolve, reject) => {
+    tcpping.ping({
+      address: node.address,
+      port: node.port,
+      timeout: 2000,
+      attempts: 3,
+    }, (err, data) => {
+      if (err) {
+        resolve(null)
+        return
+      }
+      resolve(parse_delay(data))
+    })
+  })
+}
+const parse_delay = (data) => {
+  if (!data) {
+    return null
+  }
+  const effective_delay = (s) => {
+    let n = parseFloat(s)
+    if (n.toString() === 'NaN') {
+      return null
+    }
+    return n
+  }
+  for (let field of ['avg', 'min', 'max']) {
+    if (field in data) {
+      let delay = effective_delay(data[field])
+      if (delay) {
+        return parseFloat(delay.toFixed(2))
+      }
+    }
+  }
+  return null
+}
+
+const nodeCompareByDelayFunc = () => {
+  return (a, b) => {
+    const a_delay = engine.delaies[a.id] || 0
+    const b_delay = engine.delaies[b.id] || 0
+    const a_score = a_delay * 100
+    const b_score = b_delay * 100
+    if (a_score != b_score) {
+      return a_score - b_score
+    } else {
+      return 0
+    }
+  }
+}
+
 module.exports = {
   init,
   quit,
@@ -506,4 +579,5 @@ module.exports = {
   start,
   close,
   clearIni,
+  nodeCompareByDelayFunc,
 }
