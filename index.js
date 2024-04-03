@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const { v4: new_uuid } = require('uuid')
 const tcpping = require('tcp-ping')
 const xParser = require('xfuture/parser')
 const xEngine = require('xfuture/index')
