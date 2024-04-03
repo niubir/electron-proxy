@@ -8,10 +8,6 @@
   ],
   "author": "niubir",
   "license": "ISC",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "main": "index.js",
   "files": [
     "index.js",
